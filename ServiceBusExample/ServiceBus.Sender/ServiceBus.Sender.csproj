@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Messaging.ServiceBus" Version="7.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SeerviceBus.MessageEntities\ServiceBus.MessageEntities.csproj" />
+    <ProjectReference Include="..\ServiceBus.Config\ServiceBus.Config.csproj" />
+  </ItemGroup>
+
+</Project>
