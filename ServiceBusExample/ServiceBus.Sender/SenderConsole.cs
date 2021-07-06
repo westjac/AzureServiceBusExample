@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -22,20 +23,29 @@ namespace ServiceBus.Sender
         {
             _random = new Random();
 
-            WriteLine("Sender Console - Hit Enter");
-            ReadLine();
+            WriteLine("Sender Console - Enter number of messages to send (0 to exit): ");
+            int messageCount = Convert.ToInt32(ReadLine());
 
-            await SendError();
+            while (messageCount != 0)
+            {
+                for (int i = 0; i < messageCount; i++)
+                {
+                    await SendError();
+                    //await SendErrorNoBody();
+                    WriteLine($"Sent {i+1} messages so far.", ConsoleColor.Magenta);
+                }
+                WriteLine("Sender Console - Enter number of messages to send (0 to exit): ");
+                messageCount = Convert.ToInt32(ReadLine());
+            }
 
-            WriteLine("Sender Console - Complete");
-            ReadLine();
+            WriteLine("Sender Console - Complete", ConsoleColor.Green);
         }
 
         static async Task SendError()
         {
             _client = new ServiceBusClient(Settings.ConnectionString);
             _sender = _client.CreateSender(Settings.QueueName);
-            WriteLine("Sending Error...");
+            WriteLine("Sending Error...", ConsoleColor.DarkGray);
             
             var error = new ErrorMessage()
             {
@@ -60,7 +70,36 @@ namespace ServiceBus.Sender
             try
             {
                 await _sender.SendMessageAsync(message);
-                WriteLine("An error message has been published to the queue.");
+            }
+            finally
+            {
+                await _sender.DisposeAsync();
+                await _client.DisposeAsync();
+            }
+
+            WriteLine("Done!", ConsoleColor.DarkGray);
+        }
+
+        static async Task SendErrorNoBody()
+        {
+            WriteLine("SendErrorNoBody");
+
+            var message = new ServiceBusMessage()
+            {
+                Subject = "ErrorMessage No Body"
+            };
+
+            message.ApplicationProperties.Add("SystemId", 1367);
+            message.ApplicationProperties.Add("ErrorType", "System.NotFound");
+            message.ApplicationProperties.Add("ErrorTime", DateTime.Now);
+
+            _client = new ServiceBusClient(Settings.ConnectionString);
+            _sender = _client.CreateSender(Settings.QueueName);
+
+            Write("Sending error message with no body...");
+            try
+            {
+                await _sender.SendMessageAsync(message);
             }
             finally
             {
@@ -69,6 +108,14 @@ namespace ServiceBus.Sender
             }
 
             WriteLine("Done!");
+        }
+
+        private static void WriteLine(string text, ConsoleColor color = ConsoleColor.White)
+        {
+            var tempColor = Console.ForegroundColor;
+            Console.ForegroundColor = color;
+            Console.WriteLine(text);
+            Console.ForegroundColor = tempColor;
         }
     }
 }
