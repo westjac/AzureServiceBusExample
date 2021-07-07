@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SeerviceBus.MessageEntities\ServiceBus.MessageEntities.csproj" />
     <ProjectReference Include="..\ServiceBus.Config\ServiceBus.Config.csproj" />
   </ItemGroup>
 

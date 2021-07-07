@@ -1,16 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using ServiceBus.Config;
 using Azure.Messaging.ServiceBus;
-using Microsoft.Azure.Amqp.Framing;
-using ServiceBus.MessageEntities;
 using static System.Console;
+using Error = ServiceBus.Sender.Entities.Error;
 
 namespace ServiceBus.Sender
 {
@@ -47,7 +42,7 @@ namespace ServiceBus.Sender
             _sender = _client.CreateSender(Settings.QueueName);
             WriteLine("Sending Error...", ConsoleColor.DarkGray);
             
-            var error = new ErrorMessage()
+            var error = new Error()
             {
                 Host = "Error Console",
                 Id = _random.Next(),
