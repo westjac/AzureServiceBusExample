@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using ServiceBus.Receiver.data;
+using ServiceBus.Receiver.Data;
 
 //DI, Serilog, Settings
 
@@ -14,7 +14,8 @@ namespace ServiceBus.Receiver
             var serviceProvider = new ServiceCollection()
                 .AddLogging()
                 .AddSingleton<ReceiverConsole>()
-                .AddDbContext<ServiceBusDbContext>(options => options.UseSqlServer("Data Source=localhost;Initial Catalog=ServiceBusExampleDatabase;Integrated Security=True;"))
+                .AddSingleton<ErrorHandler>()
+                .AddDbContext<ServiceBusDbContext>()
                 .BuildServiceProvider();
 
             var console = serviceProvider.GetService<ReceiverConsole>();
