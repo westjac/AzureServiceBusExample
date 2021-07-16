@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ServiceBus.Config
+﻿namespace ServiceBus.Sender
 {
     public class Settings
     {

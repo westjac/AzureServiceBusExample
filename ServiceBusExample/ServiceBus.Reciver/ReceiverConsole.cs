@@ -49,7 +49,7 @@ namespace ServiceBus.Receiver
                 MaxConcurrentCalls = threads,
                 MaxAutoLockRenewalDuration = TimeSpan.FromMinutes(10)
             };
-            var processor = client.CreateProcessor(Settings.QueueName, options);
+            var processor = client.CreateProcessor(Settings.TopicName, Settings.SubscriptionName, options);
 
             try
             {

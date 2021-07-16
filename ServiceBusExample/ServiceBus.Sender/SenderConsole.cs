@@ -2,7 +2,6 @@
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using ServiceBus.Config;
 using Azure.Messaging.ServiceBus;
 using ServiceBus.Entities;
 using static System.Console;
@@ -38,7 +37,7 @@ namespace ServiceBus.Sender
         static async Task SendWebServiceRequest()
         {
             _client = new ServiceBusClient(Settings.ConnectionString);
-            _sender = _client.CreateSender(Settings.QueueName);
+            _sender = _client.CreateSender(Settings.TopicName);
             WriteLine("Sending WebServiceRequestMessage...", ConsoleColor.DarkGray);
             
             var error = new WebServiceRequest()
@@ -88,7 +87,7 @@ namespace ServiceBus.Sender
             message.ApplicationProperties.Add("ErrorTime", DateTime.Now);
 
             _client = new ServiceBusClient(Settings.ConnectionString);
-            _sender = _client.CreateSender(Settings.QueueName);
+            _sender = _client.CreateSender(Settings.TopicName);
 
             Write("Sending error message with no body...");
             try
