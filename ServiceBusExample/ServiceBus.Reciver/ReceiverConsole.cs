@@ -3,16 +3,16 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
-using ServiceBus.Receiver.Data.Entities;
+using ServiceBus.Entities;
 
 namespace ServiceBus.Receiver
 {
     internal class ReceiverConsole
     {
-        private readonly ErrorHandler _errorHandler;
-        public ReceiverConsole(ErrorHandler errorHandler)
+        private readonly WebServiceRequestHandler _webServiceRequestHandler;
+        public ReceiverConsole(WebServiceRequestHandler webServiceRequestHandler)
         {
-            _errorHandler = errorHandler;
+            _webServiceRequestHandler = webServiceRequestHandler;
         }
 
         public void Run()
@@ -23,11 +23,11 @@ namespace ServiceBus.Receiver
         private async Task MessageHandler(ProcessMessageEventArgs args)
         {
             string body = Encoding.UTF8.GetString(args.Message.Body);
-            var errorMessage = JsonSerializer.Deserialize<Error>(body);
+            var message = JsonSerializer.Deserialize<WebServiceRequest>(body);
 
             //Process the message
-            _errorHandler.WriteToConsole(errorMessage);
-            _errorHandler.WriteToDatabase(errorMessage);
+            _webServiceRequestHandler.WriteToConsole(message);
+            _webServiceRequestHandler.WriteToDatabase(message);
 
             // complete the message. messages is deleted from the queue. 
             await args.CompleteMessageAsync(args.Message);

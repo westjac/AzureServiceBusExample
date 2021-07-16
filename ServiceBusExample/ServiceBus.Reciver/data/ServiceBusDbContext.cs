@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ServiceBus.Receiver.Data.Entities;
+using ServiceBus.Entities;
 
 namespace ServiceBus.Receiver.Data
 {
     public class ServiceBusDbContext : DbContext
     {
-        public DbSet<Error> Errors { get; set; }
+        public DbSet<WebServiceRequest> WebServiceRequests { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {

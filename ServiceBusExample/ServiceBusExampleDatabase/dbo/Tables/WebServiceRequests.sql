@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[Errors]
+﻿CREATE TABLE [dbo].[WebServiceRequests]
 (
 	[Id] INT NOT NULL PRIMARY KEY, 
     [Host] NVARCHAR(50) NOT NULL, 

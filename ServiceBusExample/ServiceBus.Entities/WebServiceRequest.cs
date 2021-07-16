@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace ServiceBus.Receiver.Data.Entities
+namespace ServiceBus.Entities
 {
-    public class Error
+    public class WebServiceRequest
     {
         public int Id { get; set; }
         public string Host { get; set; }

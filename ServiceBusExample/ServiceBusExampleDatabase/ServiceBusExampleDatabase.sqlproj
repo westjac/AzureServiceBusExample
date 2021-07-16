@@ -60,6 +60,6 @@
     <Folder Include="dbo\Tables" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="dbo\Tables\Errors.sql" />
+    <Build Include="dbo\Tables\WebServiceRequests.sql" />
   </ItemGroup>
 </Project>

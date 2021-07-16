@@ -14,12 +14,13 @@ namespace ServiceBus.Receiver
             var serviceProvider = new ServiceCollection()
                 .AddLogging()
                 .AddSingleton<ReceiverConsole>()
-                .AddSingleton<ErrorHandler>()
+                .AddSingleton<WebServiceRequestHandler>()
                 .AddDbContext<ServiceBusDbContext>()
                 .BuildServiceProvider();
 
-            var console = serviceProvider.GetService<ReceiverConsole>();
-            console.Run();
+            serviceProvider.GetService<ReceiverConsole>()
+                .Run();
+            
 
         }
     }

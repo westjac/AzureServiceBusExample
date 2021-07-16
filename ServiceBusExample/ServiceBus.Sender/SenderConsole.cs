@@ -4,8 +4,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using ServiceBus.Config;
 using Azure.Messaging.ServiceBus;
+using ServiceBus.Entities;
 using static System.Console;
-using Error = ServiceBus.Sender.Entities.Error;
 
 namespace ServiceBus.Sender
 {
@@ -25,8 +25,7 @@ namespace ServiceBus.Sender
             {
                 for (int i = 0; i < messageCount; i++)
                 {
-                    await SendError();
-                    //await SendErrorNoBody();
+                    await SendWebServiceRequest();
                     WriteLine($"Sent {i+1} messages so far.", ConsoleColor.Magenta);
                 }
                 WriteLine("Sender Console - Enter number of messages to send (0 to exit): ");
@@ -36,15 +35,15 @@ namespace ServiceBus.Sender
             WriteLine("Sender Console - Complete", ConsoleColor.Green);
         }
 
-        static async Task SendError()
+        static async Task SendWebServiceRequest()
         {
             _client = new ServiceBusClient(Settings.ConnectionString);
             _sender = _client.CreateSender(Settings.QueueName);
-            WriteLine("Sending Error...", ConsoleColor.DarkGray);
+            WriteLine("Sending WebServiceRequestMessage...", ConsoleColor.DarkGray);
             
-            var error = new Error()
+            var error = new WebServiceRequest()
             {
-                Host = "Error Console",
+                Host = "Web Service Request Sender Console",
                 Id = _random.Next(),
                 Type = "System.Business.NotFoundExample",
                 StatusCode = 0,
@@ -59,7 +58,7 @@ namespace ServiceBus.Sender
             var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(jsonErrorMessage))
             {
                 ContentType = "application/json",
-                Subject = "ErrorMessage"
+                Subject = "WebServiceRequestMessage"
             };
 
             try
@@ -75,7 +74,7 @@ namespace ServiceBus.Sender
             WriteLine("Done!", ConsoleColor.DarkGray);
         }
 
-        static async Task SendErrorNoBody()
+        static async Task SendWebServiceRequestNoBody()
         {
             WriteLine("SendErrorNoBody");
 
